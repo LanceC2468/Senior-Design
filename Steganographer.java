@@ -1,6 +1,10 @@
 import java.io.File;
 import  java.io.IOException;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.imageio.ImageIO;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
@@ -218,7 +222,14 @@ public class Steganographer {
         else{
             filename="Key.png";
         }
-            
+        
+        JFrame jf = new JFrame("Steganographer");
+        jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JPanel buttonPanel = new JPanel();
+        JButton bl = new JButton("Encode Blue");
+        JButton re = new JButton("Encode Red");
+        JButton gr = new JButton("Encode Green");
+
         BufferedImage image = null; 
         // READ IMAGE 
         try { 

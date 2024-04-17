@@ -2,6 +2,7 @@ import java.io.File;
 import  java.io.IOException;
 import java.awt.image.BufferedImage;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -225,10 +226,18 @@ public class Steganographer {
         
         JFrame jf = new JFrame("Steganographer");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel buttonPanel = new JPanel();
+        JPanel btnPanel = new JPanel();
         JButton bl = new JButton("Encode Blue");
         JButton re = new JButton("Encode Red");
         JButton gr = new JButton("Encode Green");
+
+        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(bl);
+        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(re);
+        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(gr);
+        btnPanel.add(Box.createVerticalGlue());
 
         BufferedImage image = null; 
         // READ IMAGE 

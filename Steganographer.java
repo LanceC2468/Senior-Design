@@ -230,15 +230,22 @@ public class Steganographer {
         JButton bl = new JButton("Encode Blue");
         JButton re = new JButton("Encode Red");
         JButton gr = new JButton("Encode Green");
+        JButton bld = new JButton("Decode Blue");
+        JButton red = new JButton("Decode Red");
+        JButton grd = new JButton("Decode Green");
 
         btnPanel.add(Box.createVerticalGlue());
         btnPanel.add(bl);
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(Box.createHorizontalGlue());
         btnPanel.add(re);
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(Box.createHorizontalGlue());
         btnPanel.add(gr);
         btnPanel.add(Box.createVerticalGlue());
 
+        jf.add(btnPanel);
+        jf.pack();
+        jf.setVisible(true);
+        
         BufferedImage image = null; 
         // READ IMAGE 
         try { 
@@ -253,7 +260,7 @@ public class Steganographer {
         catch (IOException e) { 
             System.out.println("Error: " + e); 
         } 
-        if(args.length>1){
+        /*if(args.length>1){
            pass=args[1];
            if(args.length>=2){
             encode(pass,image,args[2]);
@@ -266,7 +273,7 @@ public class Steganographer {
         if(args.length==1){
             decode(image);
         }
-        
+        */
         
     }
     

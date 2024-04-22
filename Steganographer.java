@@ -18,7 +18,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 public class Steganographer implements ActionListener{
     JFileChooser jfc = new JFileChooser();
-    JTextField jt;
+    static JTextField jt;
     JFrame jf = new JFrame("Steganographer");
     public static BufferedImage image;
     File file = null;
@@ -301,12 +301,25 @@ public class Steganographer implements ActionListener{
             temp="";
         }
         String password = new String(byteParse);
+        jt.setText(password);
         writeToClipboard(password,null);   
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand() == "Encode Blue"){
             encode(jt.getText(),'b');
+        }else if(e.getActionCommand() == "Encode Red"){
+            encode(jt.getText(),'r');
+        }else if(e.getActionCommand() == "Encode Green"){
+            encode(jt.getText(),'g');
+        }else if(e.getActionCommand() == "Decode Blue"){
+            decode(image,'b');
+        }else if(e.getActionCommand() == "Decode Red"){
+            decode(image,'r');
+        }else if(e.getActionCommand() == "Decode Green"){
+            decode(image,'g');
         }
+        
+        
         if(e.getActionCommand()=="Open File"){
             int returnVal = jfc.showOpenDialog(jf);
             if (returnVal == JFileChooser.APPROVE_OPTION) {

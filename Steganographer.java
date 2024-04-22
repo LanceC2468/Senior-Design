@@ -226,6 +226,12 @@ public class Steganographer implements ActionListener{
                 file = jfc.getSelectedFile();
             }
         }
+        if(e.getActionCommand()=="Save File"){
+            int returnVal = jfc.showSaveDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+            }
+        }
     }
 
     public Steganographer(){

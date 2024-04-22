@@ -27,7 +27,7 @@ public class Steganographer implements ActionListener{
         Transferable transferable = new StringSelection(s);
         clipboard.setContents(transferable, owner);
     }
-    public static void encode(String password){
+    public static void encode(String password,char col){
         String colTemp=null;
         String temp;
         byte[] charbyte = password.getBytes();   
@@ -46,7 +46,15 @@ public class Steganographer implements ActionListener{
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
             if(counter > 0){
                 colTemp = colTemp.substring(0,7) + "0";
                 counter--;
@@ -55,8 +63,17 @@ public class Steganographer implements ActionListener{
             else{
                 colTemp = colTemp.substring(0,7) + temp.charAt(w-diff);
             }
+            if(col == 'b'){
+                b = Integer.parseUnsignedInt(colTemp,2); 
+            }
+            if(col == 'r'){
+                r = Integer.parseUnsignedInt(colTemp,2);
+            }
+            if(col == 'g'){
+                g = Integer.parseUnsignedInt(colTemp,2);
+            }
+                
             
-            g = Integer.parseUnsignedInt(colTemp,2);
 
             p = (a << 24) | (r << 16) | (g << 8) | b;
             image.setRGB(0,w,p);
@@ -71,7 +88,15 @@ public class Steganographer implements ActionListener{
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
 
             if(counter > 0){
                 colTemp = colTemp.substring(0,7) + "0";
@@ -82,7 +107,15 @@ public class Steganographer implements ActionListener{
                 colTemp = colTemp.substring(0,7) + temp.charAt(w-diff);
             }
             
-            g = Integer.parseUnsignedInt(colTemp,2);
+            if(col == 'b'){
+                b = Integer.parseUnsignedInt(colTemp,2); 
+            }
+            if(col == 'r'){
+                r = Integer.parseUnsignedInt(colTemp,2);
+            }
+            if(col == 'g'){
+                g = Integer.parseUnsignedInt(colTemp,2);
+            }
 
             p = (a << 24) | (r << 16) | (g << 8) | b;
             image.setRGB(1,w,p);
@@ -97,7 +130,15 @@ public class Steganographer implements ActionListener{
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
 
             if(counter > 0){
                 colTemp = colTemp.substring(0,7) + "0";
@@ -108,7 +149,15 @@ public class Steganographer implements ActionListener{
                 colTemp = colTemp.substring(0,7) + temp.charAt(w-diff);
             }
 
-            g = Integer.parseUnsignedInt(colTemp,2);
+            if(col == 'b'){
+                b = Integer.parseUnsignedInt(colTemp,2); 
+            }
+            if(col == 'r'){
+                r = Integer.parseUnsignedInt(colTemp,2);
+            }
+            if(col == 'g'){
+                g = Integer.parseUnsignedInt(colTemp,2);
+            }
 
             p = (a << 24) | (r << 16) | (g << 8) | b;
             image.setRGB(2,w,p);
@@ -126,13 +175,29 @@ public class Steganographer implements ActionListener{
                 int g = (p >> 8) & 0xff;
                 int b = p & 0xff;
 
-                colTemp = Integer.toBinaryString(g);
+                if(col == 'b'){
+                    colTemp = Integer.toBinaryString(b); 
+                }
+                if(col == 'r'){
+                    colTemp = Integer.toBinaryString(r); 
+                }
+                if(col == 'g'){
+                    colTemp = Integer.toBinaryString(g); 
+                }
                 while(colTemp.length() < 8){
                     colTemp="0"+colTemp;
                 }
 
                 colTemp = colTemp.substring(0,7) + temp.charAt(offsety);
-                g = Integer.parseUnsignedInt(colTemp,2);
+                if(col == 'b'){
+                    b = Integer.parseUnsignedInt(colTemp,2); 
+                }
+                if(col == 'r'){
+                    r = Integer.parseUnsignedInt(colTemp,2);
+                }
+                if(col == 'g'){
+                    g = Integer.parseUnsignedInt(colTemp,2);
+                }
 
                 p = (a << 24) | (r << 16) | (g << 8) | b;
                 image.setRGB(startX+offsetx,startY+offsety,p);
@@ -142,7 +207,7 @@ public class Steganographer implements ActionListener{
         
     }
 
-    public static void decode(BufferedImage img){
+    public static void decode(BufferedImage img,char col){
         int xStart;
         int yStart;
         int passLength;
@@ -151,12 +216,19 @@ public class Steganographer implements ActionListener{
         
         for(int i = 0; i < 7; i++){//get message length
             int p = img.getRGB(0,i);
-            int a = (p >> 24) & 0xff;
             int r = (p >> 16) & 0xff;
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
             temp = temp+colTemp.charAt(colTemp.length()-1);
         }
         passLength=Integer.parseUnsignedInt(temp,2);
@@ -165,12 +237,19 @@ public class Steganographer implements ActionListener{
         colTemp = null;
         for(int i = 0; i < 12; i++){//get start x
             int p = img.getRGB(1,i);
-            int a = (p >> 24) & 0xff;
             int r = (p >> 16) & 0xff;
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
             temp = temp+colTemp.charAt(colTemp.length()-1);
         }
         xStart = Integer.parseUnsignedInt(temp,2);
@@ -180,12 +259,19 @@ public class Steganographer implements ActionListener{
 
         for(int i = 0; i < 12; i++){//get start y
             int p = img.getRGB(2,i);
-            int a = (p >> 24) & 0xff;
             int r = (p >> 16) & 0xff;
             int g = (p >> 8) & 0xff;
             int b = p & 0xff;
 
-            colTemp = Integer.toBinaryString(g);
+            if(col == 'b'){
+                colTemp = Integer.toBinaryString(b); 
+            }
+            if(col == 'r'){
+                colTemp = Integer.toBinaryString(r); 
+            }
+            if(col == 'g'){
+                colTemp = Integer.toBinaryString(g); 
+            }
             temp = temp+colTemp.charAt(colTemp.length()-1);
         }
         yStart = Integer.parseUnsignedInt(temp,2);
@@ -196,12 +282,19 @@ public class Steganographer implements ActionListener{
         for(int x = xStart; x < passLength+xStart; x++){
             for(int y = yStart; y < yStart+7; y++){
                 int p = img.getRGB(x,y);
-                int a = (p >> 24) & 0xff;
                 int r = (p >> 16) & 0xff;
                 int g = (p >> 8) & 0xff;
                 int b = p & 0xff;
 
-                colTemp = Integer.toBinaryString(g);
+                if(col == 'b'){
+                    colTemp = Integer.toBinaryString(b); 
+                }
+                if(col == 'r'){
+                    colTemp = Integer.toBinaryString(r); 
+                }
+                if(col == 'g'){
+                    colTemp = Integer.toBinaryString(g); 
+                }
                 temp = temp+colTemp.charAt(colTemp.length()-1);
             }
             byteParse[x-xStart] = Byte.parseByte(temp,2);
@@ -212,7 +305,7 @@ public class Steganographer implements ActionListener{
     }
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand() == "Encode Blue"){
-            encode(jt.getText());
+            encode(jt.getText(),'b');
         }
         if(e.getActionCommand()=="Open File"){
             int returnVal = jfc.showOpenDialog(jf);

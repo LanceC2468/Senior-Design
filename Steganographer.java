@@ -4,15 +4,20 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.imageio.ImageIO;
+import java.awt.event.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
-public class Steganographer {
+public class Steganographer implements ActionListener{
+    JFileChooser jfc = new JFileChooser();
+    JFrame jf = new JFrame("Steganographer");
+    public File file = null;
     public static void writeToClipboard(String s, ClipboardOwner owner) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(s);
@@ -214,17 +219,23 @@ public class Steganographer {
         String password = new String(byteParse);
         writeToClipboard(password,null);   
     }
-    public static void main(String[] args) {
-        String pass = "Mr.Kraft.Example";
-        String filename = "";
-        if(args.length > 0){
-            filename = args[0];
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand()=="Open File"){
+            int returnVal = jfc.showOpenDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+            }
         }
-        else{
-            filename="Key.png";
+        if(e.getActionCommand()=="Save File"){
+            int returnVal = jfc.showSaveDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+            }
         }
+    }
+
+    public Steganographer(){
         
-        JFrame jf = new JFrame("Steganographer");
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel btnPanel = new JPanel();
         JButton bl = new JButton("Encode Blue");
@@ -233,6 +244,17 @@ public class Steganographer {
         JButton bld = new JButton("Decode Blue");
         JButton red = new JButton("Decode Red");
         JButton grd = new JButton("Decode Green");
+        JButton open = new JButton("Open File");
+        JButton save = new JButton("Save File");
+
+        bl.addActionListener(this);
+        re.addActionListener(this);
+        gr.addActionListener(this);
+        bld.addActionListener(this);
+        red.addActionListener(this);
+        grd.addActionListener(this);
+        open.addActionListener(this);
+        save.addActionListener(this);
 
         btnPanel.add(Box.createVerticalGlue());
         btnPanel.add(bl);
@@ -242,9 +264,36 @@ public class Steganographer {
         btnPanel.add(gr);
         btnPanel.add(Box.createVerticalGlue());
 
+        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(bld);
+        btnPanel.add(Box.createHorizontalGlue());
+        btnPanel.add(red);
+        btnPanel.add(Box.createHorizontalGlue());
+        btnPanel.add(grd);
+        btnPanel.add(Box.createVerticalGlue());
+
+        btnPanel.add(open);
+        btnPanel.add(Box.createHorizontalGlue());
+        btnPanel.add(save);
+
+        
+
+
         jf.add(btnPanel);
         jf.pack();
         jf.setVisible(true);
+    }
+    public static void main(String[] args) {
+        String pass = "Mr.Kraft.Example";
+        String filename = "";
+        if(args.length > 0){
+            filename = args[0];
+        }
+        else{
+            filename="Key.png";
+        }
+        Steganographer window = new Steganographer();
+       
         
         BufferedImage image = null; 
         // READ IMAGE 

@@ -3,10 +3,12 @@ import  java.io.IOException;
 import java.awt.image.BufferedImage;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.imageio.ImageIO;
 import java.awt.event.*;
 import java.awt.datatransfer.Clipboard;
@@ -16,14 +18,16 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 public class Steganographer implements ActionListener{
     JFileChooser jfc = new JFileChooser();
+    JTextField jt;
     JFrame jf = new JFrame("Steganographer");
-    public File file = null;
+    public static BufferedImage image;
+    File file = null;
     public static void writeToClipboard(String s, ClipboardOwner owner) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(s);
         clipboard.setContents(transferable, owner);
     }
-    public static void encode(String password , BufferedImage image, String outFilename){
+    public static void encode(String password){
         String colTemp=null;
         String temp;
         byte[] charbyte = password.getBytes();   
@@ -134,21 +138,8 @@ public class Steganographer implements ActionListener{
                 image.setRGB(startX+offsetx,startY+offsety,p);
             }
         }
-        if(outFilename==null){
-            outFilename="newKey.png";
-        }
-        try { // WRITE IMAGE 
-            // Output file path 
-            File output_file = new File(outFilename); 
-  
-            // Writing to file taking type and path as 
-            ImageIO.write(image, "png", output_file); 
-  
-            System.out.println("Writing complete."); 
-        } 
-        catch (IOException e) { 
-            System.out.println("Error: " + e); 
-        } 
+        
+        
     }
 
     public static void decode(BufferedImage img){
@@ -220,16 +211,31 @@ public class Steganographer implements ActionListener{
         writeToClipboard(password,null);   
     }
     public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand() == "Encode Blue"){
+            encode(jt.getText());
+        }
         if(e.getActionCommand()=="Open File"){
             int returnVal = jfc.showOpenDialog(jf);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = jfc.getSelectedFile();
+                try{
+                image = ImageIO.read(file);
+                }catch(IOException x){
+                    jt.setText("File failed to open" );
+                }
             }
         }
         if(e.getActionCommand()=="Save File"){
             int returnVal = jfc.showSaveDialog(jf);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 file = jfc.getSelectedFile();
+                try {           
+                    // Writing to file taking type and path as 
+                    ImageIO.write(image, "png", file); 
+                } 
+                catch (IOException x) { 
+                   jt.setText("File failed to write"); 
+                } 
             }
         }
     }
@@ -238,6 +244,12 @@ public class Steganographer implements ActionListener{
         
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JPanel btnPanel = new JPanel();
+        btnPanel.setLayout(new BoxLayout(btnPanel,BoxLayout.X_AXIS));
+        JPanel decPanel = new JPanel();
+        decPanel.setLayout(new BoxLayout(decPanel, BoxLayout.X_AXIS));
+        JPanel filePanel = new JPanel();
+        filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.X_AXIS));
+        JTextField jt = new JTextField();
         JButton bl = new JButton("Encode Blue");
         JButton re = new JButton("Encode Red");
         JButton gr = new JButton("Encode Green");
@@ -256,74 +268,48 @@ public class Steganographer implements ActionListener{
         open.addActionListener(this);
         save.addActionListener(this);
 
-        btnPanel.add(Box.createVerticalGlue());
+        btnPanel.add(Box.createHorizontalGlue());
         btnPanel.add(bl);
         btnPanel.add(Box.createHorizontalGlue());
         btnPanel.add(re);
         btnPanel.add(Box.createHorizontalGlue());
         btnPanel.add(gr);
-        btnPanel.add(Box.createVerticalGlue());
-
-        btnPanel.add(Box.createVerticalGlue());
-        btnPanel.add(bld);
         btnPanel.add(Box.createHorizontalGlue());
-        btnPanel.add(red);
-        btnPanel.add(Box.createHorizontalGlue());
-        btnPanel.add(grd);
-        btnPanel.add(Box.createVerticalGlue());
 
-        btnPanel.add(open);
-        btnPanel.add(Box.createHorizontalGlue());
-        btnPanel.add(save);
+        decPanel.add(Box.createHorizontalGlue());
+        decPanel.add(bld);
+        decPanel.add(Box.createHorizontalGlue());
+        decPanel.add(red);
+        decPanel.add(Box.createHorizontalGlue());
+        decPanel.add(grd);
+        decPanel.add(Box.createHorizontalGlue());
 
+        filePanel.add(Box.createHorizontalGlue());
+        filePanel.add(open);
+        filePanel.add(Box.createHorizontalGlue());
+        filePanel.add(save);
+        filePanel.add(Box.createHorizontalGlue());
+
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content,BoxLayout.Y_AXIS));
+
+        content.add(btnPanel);
+        content.add(Box.createVerticalGlue());
+        content.add(decPanel);
+        content.add(Box.createVerticalGlue());
+        content.add(filePanel);
+        content.add(Box.createVerticalGlue());
+        content.add(jt);
+        jt.setText("Write message here");
         
-
-
-        jf.add(btnPanel);
+        jf.add(content);
         jf.pack();
         jf.setVisible(true);
     }
     public static void main(String[] args) {
-        String pass = "Mr.Kraft.Example";
-        String filename = "";
-        if(args.length > 0){
-            filename = args[0];
-        }
-        else{
-            filename="Key.png";
-        }
+       
         Steganographer window = new Steganographer();
        
-        
-        BufferedImage image = null; 
-        // READ IMAGE 
-        try { 
-            File input_file = new File(filename); 
-   
-  
-            // Reading input file 
-            image = ImageIO.read(input_file); 
-  
-            System.out.println("Reading complete."); 
-        } 
-        catch (IOException e) { 
-            System.out.println("Error: " + e); 
-        } 
-        /*if(args.length>1){
-           pass=args[1];
-           if(args.length>=2){
-            encode(pass,image,args[2]);
-           }
-           else{
-            encode(pass,image,filename); 
-           }
-           
-        }
-        if(args.length==1){
-            decode(image);
-        }
-        */
-        
     }
     
 }

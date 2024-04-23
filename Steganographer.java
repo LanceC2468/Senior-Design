@@ -20,7 +20,7 @@ public class Steganographer implements ActionListener{
     JFileChooser jfc = new JFileChooser();
     static JTextField jt;
     BufferedImage image;
-    JButton bl,gr,re,bld,grd,red;
+    JButton bl,gr,re,bld,grd,red,open,save;
     JFrame jf = new JFrame("Steganographer");
     File file = null;
     public static void writeToClipboard(String s, ClipboardOwner owner) {
@@ -321,8 +321,8 @@ public class Steganographer implements ActionListener{
         bld = new JButton("Decode Blue");
         red = new JButton("Decode Red");
         grd = new JButton("Decode Green");
-        JButton open = new JButton("Open File");
-        JButton save = new JButton("Save File");
+        open = new JButton("Open File");
+        save = new JButton("Save File");
 
         bl.addActionListener(this);
         re.addActionListener(this);

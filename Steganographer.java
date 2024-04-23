@@ -400,7 +400,6 @@ public class Steganographer implements ActionListener{
                 file = jfc.getSelectedFile();
                 try{
                 image = ImageIO.read(file);
-                System.out.println(image);
                 }catch(IOException x){
                     jt.setText("File failed to open" );
                 }

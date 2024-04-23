@@ -19,15 +19,16 @@ import java.awt.Toolkit;
 public class Steganographer implements ActionListener{
     JFileChooser jfc = new JFileChooser();
     static JTextField jt;
+    BufferedImage image;
+    JButton bl,gr,re,bld,grd,red;
     JFrame jf = new JFrame("Steganographer");
-    public static BufferedImage image;
     File file = null;
     public static void writeToClipboard(String s, ClipboardOwner owner) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(s);
         clipboard.setContents(transferable, owner);
     }
-    public static void encode(String password,char col){
+    public static void encode(String password,char col,BufferedImage image){
         String colTemp=null;
         String temp;
         byte[] charbyte = password.getBytes();   
@@ -203,8 +204,7 @@ public class Steganographer implements ActionListener{
                 image.setRGB(startX+offsetx,startY+offsety,p);
             }
         }
-        
-        
+        jt.setText("Message Encoded");
     }
 
     public static void decode(BufferedImage img,char col){
@@ -301,50 +301,9 @@ public class Steganographer implements ActionListener{
             temp="";
         }
         String password = new String(byteParse);
-        jt.setText(password);
         writeToClipboard(password,null);   
     }
-    public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand() == "Encode Blue"){
-            encode(jt.getText(),'b');
-        }else if(e.getActionCommand() == "Encode Red"){
-            encode(jt.getText(),'r');
-        }else if(e.getActionCommand() == "Encode Green"){
-            encode(jt.getText(),'g');
-        }else if(e.getActionCommand() == "Decode Blue"){
-            decode(image,'b');
-        }else if(e.getActionCommand() == "Decode Red"){
-            decode(image,'r');
-        }else if(e.getActionCommand() == "Decode Green"){
-            decode(image,'g');
-        }
-        
-        
-        if(e.getActionCommand()=="Open File"){
-            int returnVal = jfc.showOpenDialog(jf);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                file = jfc.getSelectedFile();
-                try{
-                image = ImageIO.read(file);
-                }catch(IOException x){
-                    jt.setText("File failed to open" );
-                }
-            }
-        }
-        if(e.getActionCommand()=="Save File"){
-            int returnVal = jfc.showSaveDialog(jf);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                file = jfc.getSelectedFile();
-                try {           
-                    // Writing to file taking type and path as 
-                    ImageIO.write(image, "png", file); 
-                } 
-                catch (IOException x) { 
-                   jt.setText("File failed to write"); 
-                } 
-            }
-        }
-    }
+    
 
     public Steganographer(){
         
@@ -355,13 +314,13 @@ public class Steganographer implements ActionListener{
         decPanel.setLayout(new BoxLayout(decPanel, BoxLayout.X_AXIS));
         JPanel filePanel = new JPanel();
         filePanel.setLayout(new BoxLayout(filePanel, BoxLayout.X_AXIS));
-        JTextField jt = new JTextField();
-        JButton bl = new JButton("Encode Blue");
-        JButton re = new JButton("Encode Red");
-        JButton gr = new JButton("Encode Green");
-        JButton bld = new JButton("Decode Blue");
-        JButton red = new JButton("Decode Red");
-        JButton grd = new JButton("Decode Green");
+        jt = new JTextField();
+        bl = new JButton("Encode Blue");
+        re = new JButton("Encode Red");
+        gr = new JButton("Encode Green");
+        bld = new JButton("Decode Blue");
+        red = new JButton("Decode Red");
+        grd = new JButton("Decode Green");
         JButton open = new JButton("Open File");
         JButton save = new JButton("Save File");
 
@@ -414,9 +373,52 @@ public class Steganographer implements ActionListener{
     }
     public static void main(String[] args) {
        
-        Steganographer window = new Steganographer();
+        javax.swing.SwingUtilities.invokeLater(
+         () -> new Steganographer()
+      );
        
     }
-    
+    public void actionPerformed(ActionEvent e) {
+        if(e.getActionCommand() == "Encode Blue"){
+            encode(jt.getText(),'b',image);
+        }else if(e.getActionCommand() == "Encode Red"){
+            encode(jt.getText(),'r',image);
+        }else if(e.getActionCommand() == "Encode Green"){
+            encode(jt.getText(),'g',image);
+        }else if(e.getActionCommand() == "Decode Blue"){
+            decode(image,'b');
+        }else if(e.getActionCommand() == "Decode Red"){
+            decode(image,'r');
+        }else if(e.getActionCommand() == "Decode Green"){
+            decode(image,'g');
+        }
+        
+        
+        if(e.getActionCommand()=="Open File"){
+            int returnVal = jfc.showOpenDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+                try{
+                image = ImageIO.read(file);
+                System.out.println(image);
+                }catch(IOException x){
+                    jt.setText("File failed to open" );
+                }
+            }
+        }
+        if(e.getActionCommand()=="Save File"){
+            int returnVal = jfc.showSaveDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+                try {           
+                    // Writing to file taking type and path as 
+                    ImageIO.write(image, "png", file); 
+                } 
+                catch (IOException x) { 
+                   jt.setText("File failed to write"); 
+                } 
+            }
+        }
+    }
 }
 

@@ -1,7 +1,6 @@
 import java.io.File;
 import  java.io.IOException;
 import java.awt.image.BufferedImage;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;

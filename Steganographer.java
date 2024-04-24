@@ -56,6 +56,9 @@ public class Steganographer implements ActionListener{
             if(col == 'g'){
                 colTemp = Integer.toBinaryString(g); 
             }
+            while(colTemp.length() < 8){
+                colTemp="0"+colTemp;
+            }
             if(counter > 0){
                 colTemp = colTemp.substring(0,7) + "0";
                 counter--;
@@ -98,6 +101,9 @@ public class Steganographer implements ActionListener{
             if(col == 'g'){
                 colTemp = Integer.toBinaryString(g); 
             }
+            while(colTemp.length() < 12){
+                colTemp="0"+colTemp;
+            }
 
             if(counter > 0){
                 colTemp = colTemp.substring(0,7) + "0";
@@ -139,6 +145,10 @@ public class Steganographer implements ActionListener{
             }
             if(col == 'g'){
                 colTemp = Integer.toBinaryString(g); 
+            }
+            
+            while(colTemp.length() < 12){
+                colTemp="0"+colTemp;
             }
 
             if(counter > 0){
@@ -300,6 +310,7 @@ public class Steganographer implements ActionListener{
             byteParse[x-xStart] = Byte.parseByte(temp,2);
             temp="";
         }
+        jt.setText("Decoded");
         String password = new String(byteParse);
         writeToClipboard(password,null);   
     }
@@ -366,6 +377,17 @@ public class Steganographer implements ActionListener{
         content.add(Box.createVerticalGlue());
         content.add(jt);
         jt.setText("Write message here");
+
+
+        int returnVal = jfc.showOpenDialog(jf);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                file = jfc.getSelectedFile();
+                try{
+                image = ImageIO.read(file);
+                }catch(IOException x){
+                    jt.setText("File failed to open" );
+                }
+            }
         
         jf.add(content);
         jf.pack();

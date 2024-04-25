@@ -22,11 +22,23 @@ public class Steganographer implements ActionListener{
     JButton bl,gr,re,bld,grd,red,open,save;
     JFrame jf = new JFrame("Steganographer");
     File file = null;
+    /**
+     * Writes the string {@code s} to the clipboard of the user.
+     * @param s string to send
+     * @param owner owner of the keyboard(typically {@code null})
+     */
     public static void writeToClipboard(String s, ClipboardOwner owner) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         Transferable transferable = new StringSelection(s);
         clipboard.setContents(transferable, owner);
     }
+    /**
+     * Changes the {@link BufferedImage} {@code image} objects data using the supplied by {@code password}
+     * on the color {@code col}.
+     * @param password string to be turned into bits and used to edit the image
+     * @param col   char that represents the color to be changed
+     * @param image the image object to be encoded
+     */
     public static void encode(String password,char col,BufferedImage image){
         String colTemp=null;
         String temp;
@@ -215,7 +227,11 @@ public class Steganographer implements ActionListener{
         }
         jt.setText("Message Encoded");
     }
-
+    /**
+     * Calls {@link WriteToClipboard} with the decoded message from {@code img} on the color {@code col}.
+     * @param img the Image object
+     * @param col the color to decode
+     */
     public static void decode(BufferedImage img,char col){
         int xStart;
         int yStart;
@@ -313,7 +329,10 @@ public class Steganographer implements ActionListener{
         String password = new String(byteParse);
         writeToClipboard(password,null);   
     }
-    
+    /**
+        Construct a {@code Steganographer} object that creates a simple GUI
+        and opens a file for use. 
+     */
 
     public Steganographer(){
         
@@ -392,6 +411,8 @@ public class Steganographer implements ActionListener{
         jf.pack();
         jf.setVisible(true);
     }
+
+    
     public static void main(String[] args) {
        
         javax.swing.SwingUtilities.invokeLater(
@@ -399,6 +420,10 @@ public class Steganographer implements ActionListener{
       );
        
     }
+    /**
+     recieves an ActionEvent and calls the appropriate function call
+     @param e recieves the {@link ActionEvent} e
+     */
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand() == "Encode Blue"){
             encode(jt.getText(),'b',image);
